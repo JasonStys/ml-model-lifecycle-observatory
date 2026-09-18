@@ -1,0 +1,17 @@
+{
+  "request_id": "example-request-0001",
+  "observation": {
+    "service_id": "svc-example-001",
+    "observed_at": "2026-09-17T12:00:00Z",
+    "request_rate": 420.0,
+    "p95_latency_ms": 185.0,
+    "error_rate": 0.035,
+    "cpu_percent": 78.0,
+    "memory_percent": 66.0,
+    "deploy_age_hours": 3.0,
+    "change_failure_rate": 0.12,
+    "saturation_events_15m": 2,
+    "region": "americas",
+    "service_tier": "standard"
+  }
+}

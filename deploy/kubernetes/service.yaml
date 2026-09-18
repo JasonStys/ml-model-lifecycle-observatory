@@ -1,0 +1,16 @@
+# File: service.yaml
+# Purpose: Expose the lifecycle API within a Kubernetes cluster without public ingress.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-observatory
+  labels:
+    app.kubernetes.io/name: ml-observatory
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: ml-observatory
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

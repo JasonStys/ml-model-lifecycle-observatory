@@ -1,0 +1,35 @@
+# File: compose.yaml
+# Purpose: Run the API with persistent local model-registry storage and a health check.
+name: ml-model-lifecycle-observatory
+services:
+  api:
+    build: .
+    environment:
+      OBSERVATORY_REGISTRY_PATH: /data/registry.sqlite3
+      OBSERVATORY_ARTIFACT_ROOT: /data/models
+      OBSERVATORY_ADMIN_TOKEN: local-compose-token-change-me
+    ports:
+      - "8000:8000"
+    volumes:
+      - observatory-data:/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=2)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  observatory-data:
+

@@ -1,0 +1,8 @@
+# File: .gitattributes
+# Purpose: Normalize text files and keep generated archives out of language statistics.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.png binary
+*.zip binary
+docs/reports/generated/** linguist-generated=true
+

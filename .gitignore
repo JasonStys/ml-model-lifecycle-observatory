@@ -1,0 +1,22 @@
+# File: .gitignore
+# Purpose: Keep generated, local, secret, and environment-specific artifacts out of version control.
+.artifacts/
+.coverage
+.env
+.hypothesis/
+.mypy_cache/
+.pip-audit-cache/
+.pip-cache/
+.pytest_cache/
+.ruff_cache/
+.test-runtime/
+.venv/
+__pycache__/
+*.egg-info/
+*.py[cod]
+coverage.xml
+dist/
+htmlcov/
+docs/reports/generated/*
+!docs/reports/generated/.gitkeep
+
