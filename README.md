@@ -100,15 +100,15 @@ external registry before scaling writers. See [docs/risk-register.md](docs/risk-
 
 ## Repository guide
 
-| Area | Responsibility |
-|---|---|
-| `src/ml_observatory/` | contracts, training, evaluation, artifacts, registry, service, API, CLI |
-| `tests/` | unit, property, integrity, concurrency, API, lifecycle, and PostgreSQL checks |
-| `sql/` | transactional SQLite and PostgreSQL registry schemas |
-| `deploy/kubernetes/` | hardened single-writer demonstration deployment |
-| `scripts/` | one-command verification, demo, manifest checks, and documentation invariants |
-| `docs/` | architecture, API, lifecycle, risks, research, operations, and evidence |
-| `.github/` | CI, CodeQL, dependency review, and Dependabot configuration |
+| Area                  | Responsibility                                                                |
+| --------------------- | ----------------------------------------------------------------------------- |
+| `src/ml_observatory/` | contracts, training, evaluation, artifacts, registry, service, API, CLI       |
+| `tests/`              | unit, property, integrity, concurrency, API, lifecycle, and PostgreSQL checks |
+| `sql/`                | transactional SQLite and PostgreSQL registry schemas                          |
+| `deploy/kubernetes/`  | hardened single-writer demonstration deployment                               |
+| `scripts/`            | one-command verification, demo, manifest checks, and documentation invariants |
+| `docs/`               | architecture, API, lifecycle, risks, research, operations, and evidence       |
+| `.github/`            | CI, CodeQL, dependency review, and Dependabot configuration                   |
 
 The per-file purpose map is in [docs/file-catalog.md](docs/file-catalog.md), and exact class,
 function, table, and important-constant locations are generated in
@@ -126,6 +126,7 @@ function, table, and important-constant locations are generated in
 - [Research basis](docs/research.md)
 - [Risk register](docs/risk-register.md)
 - [Architecture decision record](docs/adr/0001-portable-artifacts-and-small-registry.md)
+- [Latest maintenance audit](docs/reports/maintenance-audit-2026-09-18.md)
 
 ## License
 
