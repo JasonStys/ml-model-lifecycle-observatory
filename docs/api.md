@@ -1,5 +1,9 @@
 # API contract
 
+## Model release review
+
+`GET /v1/admin/models/{model_id}/review` requires the configured `X-Admin-Token` and returns an artifact/registry-verified dossier with recorded quality gates, split/calibration metadata, current roles and bounded history. It performs no lifecycle change, raw dataset verification or fresh metric evaluation. Missing/wrong auth401, unknown model404, unverifiable evidence409. No request filesystem paths are accepted. See [release review](release-review.md).
+
 The FastAPI service exposes OpenAPI at `/docs` and `/openapi.json`. All JSON models reject unknown
 fields. State-changing endpoints require `X-Admin-Token`, compared in constant time. Use HTTPS and
 managed identity in a real deployment.

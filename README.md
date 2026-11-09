@@ -1,5 +1,11 @@
 # ML Model Lifecycle Observatory
 
+## Read-only release review
+
+Operators can generate a **verified model-review dossier** before making a separate lifecycle decision. Run `python -m ml_observatory.cli review MODEL_ID --registry PATH --artifact-root PATH --report NEW.json`, optionally adding `--drift-report PATH` for a matching bounded JSON drift report. The command verifies the content-addressed bundle and agreement with registered algorithm/dataset/evaluation metadata, exposes recorded quality gates and failed reasons, calibration/abstention settings, train/calibration/test counts, current champion/challenger roles and bounded promotion history.
+
+Drift context shows sample counts, feature/threshold consistency and a small-sample review flag. Missing drift is explicitly “not supplied”; neither passed gates nor observed drift automatically promotes a model. A prior rollback candidate remains unverified context. The report distinguishes artifact/metadata verification from raw dataset verification and fresh metric evaluation. Export refuses existing files. An authenticated `GET /v1/admin/models/{id}/review` supplies the core dossier through the existing constant-time admin-token boundary without accepting server filesystem paths. See [review workflow](docs/release-review.md) and [validation](docs/reports/practical-workflows-20261109.md).
+
 [![CI](https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/workflows/ci.yml/badge.svg)](https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/workflows/codeql.yml/badge.svg)](https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/workflows/codeql.yml)
 
