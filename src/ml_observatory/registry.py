@@ -71,7 +71,7 @@ class Registry:
         """Create parent storage and apply the idempotent registry schema."""
 
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self._connect() as connection:
+        with self._session() as connection:
             connection.executescript(_schema_path().read_text(encoding="utf-8"))
 
     def _connect(self) -> sqlite3.Connection:
@@ -83,6 +83,21 @@ class Registry:
         connection.execute("PRAGMA busy_timeout = 5000")
         connection.execute("PRAGMA journal_mode = WAL")
         return connection
+
+    @contextmanager
+    def _session(self, *, read_only: bool = False) -> Iterator[sqlite3.Connection]:
+        """Close every read/schema connection; SQLite's own context only ends transactions."""
+        connection = (
+            sqlite3.connect(f"{self.path.resolve().as_uri()}?mode=ro", uri=True, timeout=5.0)
+            if read_only
+            else self._connect()
+        )
+        connection.row_factory = sqlite3.Row
+        try:
+            with connection:
+                yield connection
+        finally:
+            connection.close()
 
     @contextmanager
     def _write(self) -> Iterator[sqlite3.Connection]:
@@ -188,7 +203,7 @@ class Registry:
     def get_model(self, model_id: str) -> ModelRecord:
         """Return one model or raise a stable lookup error."""
 
-        with self._connect() as connection:
+        with self._session() as connection:
             row = connection.execute(
                 "SELECT * FROM models WHERE model_id = ?", (model_id,)
             ).fetchone()
@@ -199,7 +214,7 @@ class Registry:
     def list_models(self) -> tuple[ModelRecord, ...]:
         """Return models in newest-first order for operational inspection."""
 
-        with self._connect() as connection:
+        with self._session() as connection:
             rows = connection.execute(
                 "SELECT * FROM models ORDER BY created_at DESC, model_id"
             ).fetchall()
@@ -311,7 +326,7 @@ class Registry:
     def rollback(self, reason: str = "operator-rollback") -> str:
         """Promote the most recent prior champion and return its model identifier."""
 
-        with self._connect() as connection:
+        with self._session() as connection:
             current = connection.execute(
                 "SELECT model_id FROM active_deployments WHERE role = 'champion'"
             ).fetchone()
@@ -336,7 +351,7 @@ class Registry:
     def deployment_snapshot(self) -> DeploymentSnapshot:
         """Read champion and challenger roles in one consistent query snapshot."""
 
-        with self._connect() as connection:
+        with self._session() as connection:
             rows = connection.execute(
                 """
                 SELECT d.role, d.traffic_percent, m.*
@@ -388,7 +403,7 @@ class Registry:
     def audit_events(self) -> tuple[dict[str, Any], ...]:
         """Return ordered audit events for validation and operator review."""
 
-        with self._connect() as connection:
+        with self._session() as connection:
             rows = connection.execute("SELECT * FROM audit_events ORDER BY audit_id").fetchall()
         return tuple(
             {
@@ -400,3 +415,36 @@ class Registry:
             }
             for row in rows
         )
+
+    def review_snapshot(self, model_id: str) -> tuple[ModelRecord, dict[str, Any]]:
+        """Read selected metadata, roles and bounded history in one SQLite read transaction.
+
+        No prediction inputs, database paths or registry writes enter the review snapshot.
+        """
+        with self._session(read_only=True) as connection:
+            connection.execute("BEGIN")
+            row = connection.execute(
+                "SELECT * FROM models WHERE model_id=?", (model_id,)
+            ).fetchone()
+            if row is None:
+                raise KeyError(model_id)
+            deployments = [
+                dict(item)
+                for item in connection.execute(
+                    "SELECT role,model_id,traffic_percent,updated_at "
+                    "FROM active_deployments ORDER BY role"
+                ).fetchall()
+            ]
+            history = [
+                dict(item)
+                for item in connection.execute(
+                    "SELECT * FROM deployment_history ORDER BY deployment_id DESC LIMIT 100"
+                ).fetchall()
+            ]
+            count = int(connection.execute("SELECT count(*) FROM deployment_history").fetchone()[0])
+        return self._row_to_model(row), {
+            "deployments": deployments,
+            "recent_history": history,
+            "history_total": count,
+            "history_truncated": count > len(history),
+        }

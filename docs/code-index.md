@@ -83,17 +83,19 @@ declaration locations. Regenerate after source edits.
 
 ## `src/ml_observatory/api.py`
 
-- Line 21: `PromotionRequest`
-- Line 28: `ChallengerRequest`
-- Line 36: `create_app`
-- Line 49: `require_admin`
-- Line 66: `live`
-- Line 72: `ready`
-- Line 84: `predict`
-- Line 95: `models`
-- Line 116: `promote`
-- Line 132: `challenger`
-- Line 154: `rollback`
+- Line 24: `PromotionRequest`
+- Line 31: `ChallengerRequest`
+- Line 39: `_review_endpoint`
+- Line 42: `review`
+- Line 56: `create_app`
+- Line 69: `require_admin`
+- Line 86: `live`
+- Line 92: `ready`
+- Line 104: `predict`
+- Line 115: `models`
+- Line 136: `promote`
+- Line 160: `challenger`
+- Line 182: `rollback`
 
 ## `src/ml_observatory/artifacts.py`
 
@@ -110,13 +112,13 @@ declaration locations. Regenerate after source edits.
 
 ## `src/ml_observatory/cli.py`
 
-- Line 28: `MIN_BENCHMARK_RECORDS`
-- Line 29: `MAX_TRAINING_SECONDS`
-- Line 30: `MAX_P95_INFERENCE_MS`
-- Line 33: `_path`
-- Line 39: `build_parser`
-- Line 77: `run_benchmark`
-- Line 126: `main`
+- Line 29: `MIN_BENCHMARK_RECORDS`
+- Line 30: `MAX_TRAINING_SECONDS`
+- Line 31: `MAX_P95_INFERENCE_MS`
+- Line 34: `_path`
+- Line 40: `build_parser`
+- Line 85: `run_benchmark`
+- Line 134: `main`
 
 ## `src/ml_observatory/config.py`
 
@@ -189,19 +191,21 @@ declaration locations. Regenerate after source edits.
 - Line 65: `__init__`
 - Line 70: `initialize`
 - Line 77: `_connect`
-- Line 88: `_write`
-- Line 103: `_row_to_model`
-- Line 117: `register`
-- Line 171: `_audit`
-- Line 188: `get_model`
-- Line 199: `list_models`
-- Line 208: `promote`
-- Line 260: `assign_challenger`
-- Line 298: `clear_challenger`
-- Line 311: `rollback`
-- Line 336: `deployment_snapshot`
-- Line 357: `record_prediction`
-- Line 388: `audit_events`
+- Line 88: `_session`
+- Line 103: `_write`
+- Line 118: `_row_to_model`
+- Line 132: `register`
+- Line 186: `_audit`
+- Line 203: `get_model`
+- Line 214: `list_models`
+- Line 223: `promote`
+- Line 275: `assign_challenger`
+- Line 313: `clear_challenger`
+- Line 326: `rollback`
+- Line 351: `deployment_snapshot`
+- Line 372: `record_prediction`
+- Line 403: `audit_events`
+- Line 419: `review_snapshot`
 
 ## `src/ml_observatory/reports.py`
 
@@ -210,6 +214,15 @@ declaration locations. Regenerate after source edits.
 - Line 28: `render_dataset_card`
 - Line 62: `render_model_card`
 - Line 119: `render_drift_report`
+
+## `src/ml_observatory/review.py`
+
+- Line 20: `MAX_REVIEW_INPUT_BYTES`
+- Line 21: `MIN_CONTEXT_SAMPLES`
+- Line 24: `quality_gates`
+- Line 27: `number`
+- Line 44: `model_review`
+- Line 171: `read_drift_context`
 
 ## `src/ml_observatory/schemas.py`
 
@@ -313,6 +326,14 @@ declaration locations. Regenerate after source edits.
 - Line 115: `test_registry_rejects_invalid_transitions`
 - Line 146: `test_service_runs_shadow_and_deterministic_canary_predictions`
 - Line 174: `test_service_without_champion_fails_readiness`
+
+## `tests/test_review.py`
+
+- Line 35: `test_gate_contract_failures`
+- Line 51: `test_dossier_provenance_context_and_no_writes`
+- Line 136: `test_rejects_mismatched_context_and_metadata`
+- Line 170: `test_http_auth_tamper_empty_and_bounded_history`
+- Line 204: `test_rejects_invalid_declared_split_or_oversized_bundle`
 
 ## `tests/test_training_artifacts.py`
 

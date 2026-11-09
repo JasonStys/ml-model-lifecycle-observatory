@@ -23,6 +23,7 @@ from ml_observatory.hashing import sha256_bytes
 from ml_observatory.lifecycle import run_demo
 from ml_observatory.registry import Registry
 from ml_observatory.reports import write_json
+from ml_observatory.review import model_review, read_drift_context
 from ml_observatory.training import select_candidate, train_candidates
 
 MIN_BENCHMARK_RECORDS = 400
@@ -53,6 +54,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     inspect = commands.add_parser("inspect", help="print registry state")
     inspect.add_argument("--registry", type=_path, required=True)
+
+    review = commands.add_parser("review", help="verify a read-only model release dossier")
+    review.add_argument("model_id")
+    review.add_argument("--registry", type=_path, required=True)
+    review.add_argument("--artifact-root", type=_path, required=True)
+    review.add_argument("--drift-report", type=_path)
+    review.add_argument("--report", type=_path)
 
     promote = commands.add_parser("promote", help="promote a registered model")
     promote.add_argument("model_id")
@@ -138,6 +146,19 @@ def main(argv: list[str] | None = None) -> int:  # noqa: PLR0911
         uvicorn.run("ml_observatory.api:app", host=arguments.host, port=arguments.port)
         return 0
     registry = Registry(arguments.registry)
+    if arguments.command == "review":
+        dossier = model_review(
+            registry,
+            arguments.artifact_root,
+            arguments.model_id,
+            read_drift_context(arguments.drift_report) if arguments.drift_report else None,
+        )
+        rendered = json.dumps(dossier, indent=2, sort_keys=True)
+        if arguments.report:
+            with arguments.report.open("x", encoding="utf-8") as output:
+                output.write(rendered + "\n")
+        print(rendered)
+        return 0
     registry.initialize()
     if arguments.command == "inspect":
         print(

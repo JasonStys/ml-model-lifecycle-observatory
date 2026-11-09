@@ -84,6 +84,13 @@ locations are generated in [code-index.md](code-index.md).
 
 ## Tests
 
+| Added file | Purpose |
+|---|---|
+| `src/ml_observatory/review.py` | Bounded verified release dossier, explicit gates, drift context and interpretation. |
+| `tests/test_review.py` | Independent arithmetic plus actual artifact/registry/CLI/API non-mutating journeys. |
+| `docs/release-review.md` | Operator workflow, evidence semantics, bounds and limits. |
+| `docs/reports/practical-workflows-20261109.md` | Dated validation and resource-handle repair evidence. |
+
 | File | Purpose |
 |---|---|
 | `tests/conftest.py` | Creates deterministic shared training and deployment fixtures. |

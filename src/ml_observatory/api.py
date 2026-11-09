@@ -6,6 +6,8 @@ Symbols and line locations: see docs/code-index.md; create_app supports isolated
 from __future__ import annotations
 
 import hmac
+from collections.abc import Callable
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
@@ -14,6 +16,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ml_observatory import VERSION
 from ml_observatory.config import Settings
 from ml_observatory.registry import Registry
+from ml_observatory.review import model_review
 from ml_observatory.schemas import PredictionResponse, PredictRequest
 from ml_observatory.service import ModelService
 
@@ -33,6 +36,23 @@ class ChallengerRequest(BaseModel):
     traffic_percent: Annotated[int, Field(ge=0, le=50)] = 0
 
 
+def _review_endpoint(registry: Registry, artifact_root: Path) -> Callable[[str], dict[str, object]]:
+    """Construct a non-mutating endpoint without exposing filesystem verification failures."""
+
+    def review(model_id: str) -> dict[str, object]:
+        """Return a path-free verified dossier without changing any lifecycle state."""
+        try:
+            return model_review(registry, artifact_root, model_id)
+        except KeyError as error:
+            raise HTTPException(status_code=404, detail="model not found") from error
+        except (OSError, ValueError) as error:
+            raise HTTPException(
+                status_code=409, detail="review evidence could not be verified"
+            ) from error
+
+    return review
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Construct an application with explicit, testable registry and artifact dependencies."""
 
@@ -49,7 +69,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def require_admin(
         x_admin_token: Annotated[str | None, Header()] = None,
     ) -> None:
-        """Protect state-changing demo endpoints with constant-time token comparison."""
+        """Protect operator review and state-changing endpoints with constant-time comparison."""
 
         expected = runtime_settings.admin_token
         if (
@@ -123,6 +143,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 status_code=status.HTTP_404_NOT_FOUND, detail="model not found"
             ) from error
         return {"status": "promoted", "model_id": model_id}
+
+    application.add_api_route(
+        "/v1/admin/models/{model_id}/review",
+        _review_endpoint(registry, runtime_settings.artifact_root),
+        methods=["GET"],
+        dependencies=[Depends(require_admin)],
+        tags=["administration"],
+    )
 
     @application.post(
         "/v1/admin/challenger",
