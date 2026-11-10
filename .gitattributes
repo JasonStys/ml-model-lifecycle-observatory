@@ -5,4 +5,4 @@
 *.png binary
 *.zip binary
 docs/reports/generated/** linguist-generated=true
-
+*.docx binary

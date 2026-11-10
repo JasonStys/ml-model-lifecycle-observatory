@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "project": "ml-model-lifecycle-observatory",
+  "author": "Jason Stys",
+  "editionDate": "2026-11-09",
+  "sourceBaseline": "e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+  "sourceUrl": "https://github.com/JasonStys/ml-model-lifecycle-observatory/tree/e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+  "functionalEvidenceBaseline": "e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+  "evidenceObservedAt": "2026-11-10T05:25:40.628667+00:00",
+  "workflowEvidence": [
+    {
+      "conclusion": "success",
+      "databaseId": 42720621967,
+      "event": "push",
+      "headSha": "e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+      "name": "CodeQL",
+      "status": "completed",
+      "url": "https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/runs/42720621967"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 42720622275,
+      "event": "push",
+      "headSha": "e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+      "name": "CI",
+      "status": "completed",
+      "url": "https://github.com/JasonStys/ml-model-lifecycle-observatory/actions/runs/42720622275"
+    }
+  ],
+  "summary": "Build authenticated read-only release dossiers with verified bundle/registry agreement, recorded quality gates, bounded history and matching drift context. Fixed SQLite handle leaks.",
+  "rationale": "Gives model reviewers explicit evidence and uncertainty before an independent promotion or rollback decision.",
+  "limitations": [
+    "Synthetic controlled operator-token lab, not multi-user production model-release authority.",
+    "Dossiers verify bundle/registry metadata; they do not reread all raw dataset bytes or independently rerun recorded evaluations.",
+    "No promotion/rollback occurs; history is capped at 100 entries with truncation explicit, and previous rollback candidates remain unverified.",
+    "The 100-sample drift heuristic is not statistical confidence and the captured snapshot can become stale."
+  ],
+  "documents": [
+    {
+      "filename": "project-guide.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "bytes": 44821,
+      "sha256": "5d95645c7968979de5403eb0b1abd588036ca6aa1c69c71f31ae5acbbb36cf76",
+      "sourceBaseline": "e3f47233539d2af763b5c30a2575e6544a0ba5d7",
+      "visualReview": {
+        "approved": true,
+        "method": "Every rendered page individually viewed at readable original resolution",
+        "pageCount": 5,
+        "renderedPageSha256": {
+          "page-1.png": "d5942e124394e1a1985a18b81ade74016b7e7930c510e790d352f1ab8a8f60b4",
+          "page-2.png": "e862fd304f0989dfd940390d5e1c6fce0bc8567255cb1c173d2e4fbeea122b1f",
+          "page-3.png": "a0b2aca97f076f4f86574d0bb8ab2a92494daeaead196039bec78fb51c0989b3",
+          "page-4.png": "5412955302a76181c00fbb22506b7f3b8c12d91bea5a20e1e67302d40c37cb32",
+          "page-5.png": "c132a724c37f5e1adcedcd63f75439d431386a019d8fa025c747e15a87218892"
+        }
+      }
+    }
+  ],
+  "scope": "Reviewed documentation editions of the cited source. Checksums identify bytes, not authorship. Historical measurements retain their own dates; integration CI must be checked separately."
+}
