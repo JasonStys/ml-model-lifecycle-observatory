@@ -102,3 +102,12 @@ locations are generated in [code-index.md](code-index.md).
 | `tests/test_postgres.py` | Loads real PostgreSQL DDL and checks indexes/constraints in CI. |
 | `tests/test_registry_service.py` | Verifies concurrent state, routing, logging, promotion, and rollback. |
 | `tests/test_training_artifacts.py` | Verifies reproducibility, quality gates, safe artifacts, and inference. |
+
+## Reviewed documentation editions
+
+| File | Purpose |
+|---|---|
+| `docs/handbook.md` | Organized usage, implementation, security and evidence navigation. |
+| `docs/reports/project-guide.docx` | Reviewed source-bound Word project guide with dated evidence and limits. |
+| `docs/reports/publications.json` | Exact publication hashes, source identity and page review receipts. |
+| `docs/reports/documentation-refresh-2026-11-09.md` | Actual documentation integration checks and interpretation limits. |

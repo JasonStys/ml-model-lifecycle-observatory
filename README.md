@@ -90,7 +90,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 bash scripts/verify.sh
 ```
 
-The committed local verification result is **46 passed, 1 environment-gated PostgreSQL test,
+The earlier committed local verification result is **46 passed, 1 environment-gated PostgreSQL test,
 96.86% branch-aware coverage**, with Ruff, strict mypy, and the dependency audit clean. CI also starts PostgreSQL 18.6,
 validates container/orchestration assets, audits the lock file, builds the image, and uploads
 coverage and benchmark evidence. See [docs/reports/test-summary.md](docs/reports/test-summary.md)
@@ -137,3 +137,9 @@ function, table, and important-constant locations are generated in
 ## License
 
 [MIT](LICENSE)
+
+## Documentation editions
+
+Start with the [organized handbook](docs/handbook.md) for current usage, design, security and test guidance. Reviewed downloadable editions: [project-guide.docx](docs/reports/project-guide.docx).
+
+[Publication identities and source scope](docs/reports/publications.json) · [Documentation validation record](docs/reports/documentation-refresh-2026-11-09.md). Historical results retain their own tested revision and date.
