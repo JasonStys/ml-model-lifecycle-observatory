@@ -4,14 +4,17 @@ By Jason Stys.
 
 Build authenticated read-only release dossiers with verified bundle/registry agreement, recorded quality gates, bounded history and matching drift context. Fixed SQLite handle leaks.
 
-Build authenticated read-only release dossiers with verified bundle/registry agreement, recorded quality gates, bounded history and matching drift context. Fixed SQLite handle leaks.
+The 1.1.0 [native workbench](native-application.md) adds local data authoring, real two-model
+training, explicit deployment decisions, inference, drift and durable restart over the same
+core. Its [dated native validation](reports/native-application-2026-11-11.md) is separate
+from the historical Word edition and its source identity below.
 
 Gives model reviewers explicit evidence and uncertainty before an independent promotion or rollback decision.
 
 ## Read the documentation
 
-| Edition | Audience and contents |
-| --- | --- |
+| Edition                                          | Audience and contents                                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
 | [project-guide.docx](reports/project-guide.docx) | User and developer guide: purpose, current usage, design, boundaries and source references. |
 
 The editable Markdown remains the maintenance source. The Word files are readable editions. See [publication identities and review](reports/publications.json) and the [documentation refresh record](reports/documentation-refresh-2026-11-09.md).
@@ -51,7 +54,7 @@ The reviewed source is [`e3f47233539d2af763b5c30a2575e6544a0ba5d7`](https://gith
 
 - Synthetic controlled operator-token lab, not multi-user production model-release authority.
 - Dossiers verify bundle/registry metadata; they do not reread all raw dataset bytes or independently rerun recorded evaluations.
-- No promotion/rollback occurs; history is capped at 100 entries with truncation explicit, and previous rollback candidates remain unverified.
+- The read-only dossier never promotes or rolls back. Native lifecycle actions are separately explicit, confirm recorded gates and reverify the selected prior artifact before rollback. Dossier history remains capped at 100 entries with truncation explicit.
 - The 100-sample drift heuristic is not statistical confidence and the captured snapshot can become stale.
 
 ## Maintaining these editions

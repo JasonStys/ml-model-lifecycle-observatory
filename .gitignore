@@ -11,6 +11,11 @@
 .ruff_cache/
 .test-runtime/
 .venv/
+.venv-native31410/
+.runtime/
+release/
+artifacts/
+*.spec
 __pycache__/
 *.egg-info/
 *.py[cod]

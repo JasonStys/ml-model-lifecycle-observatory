@@ -1,5 +1,26 @@
 # ML Model Lifecycle Observatory
 
+## Native model workbench
+
+Version 1.1.0 adds an actual Windows desktop application over this repository's model,
+artifact, registry and inference implementation. Its full application includes editable JSON
+Lines data, import/validation, training of both supported algorithms, registry inspection,
+hash-verified review, explicit promotion, shadow/canary assignment, prediction, PSI drift,
+verified rollback and new-file JSON evidence export. Prepared service-health observations
+are editable data inside the workbench; selecting them does not save or train anything.
+
+The complete portable directory bundles Python 3.14.10, Tcl/Tk and the scientific libraries.
+Extract the whole Windows ZIP and launch `MLModelLifecycleObservatory.exe`; no Python,
+terminal, IDE, Docker or API account is required by that application. This is an unsigned
+Windows x64 candidate, not an independently signed installer or an Android/macOS release.
+Publication and installation are separate from the source/native acceptance checks.
+
+Your identified, locked OS-local workspace retains the dataset, SQLite registry, model
+artifacts and deployment history outside the extracted application. The UI explains its
+single trusted OS-owner boundary; it does not start the web API or provide account isolation.
+Use synthetic, approved data. Start with [native usage and recovery](docs/native-application.md)
+and [observed native validation](docs/reports/native-application-2026-11-11.md).
+
 ## Read-only release review
 
 Operators can generate a **verified model-review dossier** before making a separate lifecycle decision. Run `python -m ml_observatory.cli review MODEL_ID --registry PATH --artifact-root PATH --report NEW.json`, optionally adding `--drift-report PATH` for a matching bounded JSON drift report. The command verifies the content-addressed bundle and agreement with registered algorithm/dataset/evaluation metadata, exposes recorded quality gates and failed reasons, calibration/abstention settings, train/calibration/test counts, current champion/challenger roles and bounded promotion history.
@@ -106,15 +127,17 @@ external registry before scaling writers. See [docs/risk-register.md](docs/risk-
 
 ## Repository guide
 
-| Area                  | Responsibility                                                                |
-| --------------------- | ----------------------------------------------------------------------------- |
-| `src/ml_observatory/` | contracts, training, evaluation, artifacts, registry, service, API, CLI       |
-| `tests/`              | unit, property, integrity, concurrency, API, lifecycle, and PostgreSQL checks |
-| `sql/`                | transactional SQLite and PostgreSQL registry schemas                          |
-| `deploy/kubernetes/`  | hardened single-writer demonstration deployment                               |
-| `scripts/`            | one-command verification, demo, manifest checks, and documentation invariants |
-| `docs/`               | architecture, API, lifecycle, risks, research, operations, and evidence       |
-| `.github/`            | CI, CodeQL, dependency review, and Dependabot configuration                   |
+| Area                  | Responsibility                                                                  |
+| --------------------- | ------------------------------------------------------------------------------- |
+| `src/ml_observatory/` | contracts, training, evaluation, artifacts, registry, service, API, CLI         |
+| `tests/`              | unit, property, integrity, concurrency, API, lifecycle, and PostgreSQL checks   |
+| `desktop/`            | native authoring, original-core adapters, retained worker and profile lifecycle |
+| `native_tests/`       | actual Tk control, close and layout acceptance in synthetic profiles            |
+| `sql/`                | transactional SQLite and PostgreSQL registry schemas                            |
+| `deploy/kubernetes/`  | hardened single-writer demonstration deployment                                 |
+| `scripts/`            | one-command verification, demo, manifest checks, and documentation invariants   |
+| `docs/`               | architecture, API, lifecycle, risks, research, operations, and evidence         |
+| `.github/`            | CI, CodeQL, dependency review, and Dependabot configuration                     |
 
 The per-file purpose map is in [docs/file-catalog.md](docs/file-catalog.md), and exact class,
 function, table, and important-constant locations are generated in
@@ -131,6 +154,7 @@ function, table, and important-constant locations are generated in
 - [Complexity analysis](docs/complexity.md)
 - [Research basis](docs/research.md)
 - [Risk register](docs/risk-register.md)
+- [Native application](docs/native-application.md)
 - [Architecture decision record](docs/adr/0001-portable-artifacts-and-small-registry.md)
 - [Latest maintenance audit](docs/reports/maintenance-audit-2026-09-18.md)
 
