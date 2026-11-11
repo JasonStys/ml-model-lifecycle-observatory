@@ -5,6 +5,9 @@ Symbols and variables: see docs/code-index.md; only temporary fictional profiles
 """
 
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -153,3 +156,67 @@ def test_descriptor_budget_and_hardlink_refusal(tmp_path: Path) -> None:
     with pytest.raises(ValueError):
         read_regular(path)
     assert path.read_bytes() == b"abcd"
+
+
+@pytest.mark.parametrize("tree", ["installation", "resources"])
+def test_frozen_profile_refuses_package_trees_without_touching_existing_data(
+    tmp_path: Path, monkeypatch, tree: str
+) -> None:
+    """Real marked stores below either frozen root remain byte-identical when refused."""
+    installation, resources = tmp_path / "installation", tmp_path / "resources"
+    installation.mkdir()
+    resources.mkdir()
+    target = tmp_path / tree / "existing-profile"
+    original = Workspace(target)
+    original.close()
+    before = {path.name: path.read_bytes() for path in target.iterdir() if path.is_file()}
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "executable", str(installation / "ModelWorkbench.exe"))
+    monkeypatch.setattr(sys, "_MEIPASS", str(resources), raising=False)
+    with pytest.raises(ValueError, match="outside"):
+        Workspace(target)
+    assert before == {path.name: path.read_bytes() for path in target.iterdir() if path.is_file()}
+    missing = target.parent / "must-not-create"
+    with pytest.raises(ValueError, match="outside"):
+        Workspace(missing)
+    assert not missing.exists()
+
+
+def test_source_development_profile_is_not_mistaken_for_a_frozen_installation(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """A source-mode .runtime profile remains legitimate beside its selected interpreter."""
+    monkeypatch.setattr(sys, "frozen", False, raising=False)
+    monkeypatch.setattr(sys, "executable", str(tmp_path / "python.exe"))
+    profile = Workspace(tmp_path / ".runtime" / "synthetic-profile")
+    assert profile.models() == []
+    profile.close()
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="Actual Windows junction boundary")
+def test_actual_windows_junction_profile_and_ancestor_are_rejected(tmp_path: Path) -> None:
+    """Real directory junction aliases cannot open or create data inside their target."""
+    target, alias = tmp_path / "preserved-target", tmp_path / "junction-alias"
+    original = Workspace(target)
+    original.close()
+    before = {path.name: path.read_bytes() for path in target.iterdir() if path.is_file()}
+    command = str(Path(os.environ["SYSTEMROOT"]) / "System32" / "cmd.exe")
+    # Fixed OS junction creation only; both literal targets are inside this test's owned directory.
+    subprocess.run(  # noqa: S603
+        [command, "/d", "/c", "mklink", "/J", str(alias), str(target)],
+        check=True,
+        capture_output=True,
+        timeout=5,
+    )
+    try:
+        assert alias.is_junction()
+        for path in (alias, alias / "must-not-create"):
+            with pytest.raises(ValueError, match="Linked"):
+                Workspace(path)
+        assert not (target / "must-not-create").exists()
+        assert before == {
+            path.name: path.read_bytes() for path in target.iterdir() if path.is_file()
+        }
+    finally:
+        # Remove only this junction entry; never traverse or remove its marked target.
+        os.rmdir(alias)

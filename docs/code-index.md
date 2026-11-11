@@ -86,22 +86,23 @@ declaration locations. Regenerate after source edits.
 - Line 80: `decimal`
 - Line 89: `parse_dataset`
 - Line 108: `default_profile`
-- Line 121: `Workspace`
-- Line 124: `__init__`
-- Line 175: `close`
-- Line 181: `_open`
-- Line 186: `prepare`
-- Line 195: `train`
-- Line 226: `_summary`
-- Line 238: `models`
-- Line 243: `review`
-- Line 248: `promote`
-- Line 258: `challenger`
-- Line 271: `_reason`
-- Line 276: `rollback`
-- Line 289: `predict`
-- Line 298: `drift`
-- Line 307: `export_new`
+- Line 121: `profile_directory`
+- Line 136: `Workspace`
+- Line 139: `__init__`
+- Line 187: `close`
+- Line 193: `_open`
+- Line 198: `prepare`
+- Line 207: `train`
+- Line 238: `_summary`
+- Line 250: `models`
+- Line 255: `review`
+- Line 260: `promote`
+- Line 270: `challenger`
+- Line 283: `_reason`
+- Line 288: `rollback`
+- Line 301: `predict`
+- Line 310: `drift`
+- Line 319: `export_new`
 
 ## `native_tests/test_widgets.py`
 
@@ -466,11 +467,14 @@ declaration locations. Regenerate after source edits.
 
 ## `tests/test_native_workspace.py`
 
-- Line 15: `test_actual_profile_lock_restart_and_unknown_directory`
-- Line 41: `test_ambiguous_or_nonfinite_json_is_rejected`
-- Line 47: `test_dataset_validation_precedes_any_training_or_registry_mutation`
-- Line 73: `test_actual_models_review_explicit_promotion_prediction_drift_and_durable_restart`
-- Line 144: `test_descriptor_budget_and_hardlink_refusal`
+- Line 18: `test_actual_profile_lock_restart_and_unknown_directory`
+- Line 44: `test_ambiguous_or_nonfinite_json_is_rejected`
+- Line 50: `test_dataset_validation_precedes_any_training_or_registry_mutation`
+- Line 76: `test_actual_models_review_explicit_promotion_prediction_drift_and_durable_restart`
+- Line 147: `test_descriptor_budget_and_hardlink_refusal`
+- Line 162: `test_frozen_profile_refuses_package_trees_without_touching_existing_data`
+- Line 185: `test_source_development_profile_is_not_mistaken_for_a_frozen_installation`
+- Line 197: `test_actual_windows_junction_profile_and_ancestor_are_rejected`
 
 ## `tests/test_postgres.py`
 

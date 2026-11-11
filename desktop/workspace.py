@@ -118,15 +118,27 @@ def default_profile() -> Path:
     return base / "JasonStysPortfolio" / PRODUCT / "workspace"
 
 
+def profile_directory(directory: Path) -> Path:
+    """Refuse linked ancestors and frozen installation/resources before any profile mutation."""
+    absolute = directory.absolute()
+    for part in (absolute, *absolute.parents):
+        if part.is_symlink() or part.is_junction():
+            raise ValueError("Linked profile directories are not supported")
+    if getattr(sys, "frozen", False):
+        installation = Path(sys.executable).resolve().parent
+        resources = Path(sys._MEIPASS).resolve()
+        destination = absolute.resolve()
+        if any(destination.is_relative_to(root) for root in (installation, resources)):
+            raise ValueError("Choose durable data outside the installed application/resources")
+    return absolute
+
+
 class Workspace:
     "One trusted OS owner's durable registry; mutations remain explicit original core operations."
 
     def __init__(self, directory: Path):
         "Identify a new/known profile, lock it before registry work, and never adopt unknown files."
-        absolute = directory.absolute()
-        for part in (absolute, *absolute.parents):
-            if part.is_symlink():
-                raise ValueError("Linked profile directories are not supported")
+        absolute = profile_directory(directory)
         absolute.mkdir(parents=True, exist_ok=True, mode=0o700)
         marker = absolute / "profile.json"
         entries = tuple(absolute.iterdir())
@@ -158,7 +170,7 @@ class Workspace:
             self.artifacts = self.directory / "models"
             self.dataset = self.directory / "dataset.jsonl"
             database = self.directory / "registry.sqlite3"
-            if database.is_symlink() or self.artifacts.is_symlink():
+            if database.is_symlink() or self.artifacts.is_symlink() or self.artifacts.is_junction():
                 raise ValueError("Linked registry/artifact paths are not supported")
             if database.exists():
                 # SQLite stays authoritative; reject aliases before opening its path.

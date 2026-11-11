@@ -7,10 +7,10 @@ must be recorded separately; this report does not claim they have already occurr
 
 ## Source and core gates
 
-- Full selected Python suite: **83 passed, 1 PostgreSQL integration test deselected**,
+- Full selected Python suite after profile-boundary review: **87 passed, 1 PostgreSQL integration test deselected**,
   original-core branch-aware coverage **97.16%**, above the unchanged 95% floor.
   The denominator is `ml_observatory`; it does not pretend the native GUI/build code has
-  that coverage. Native adapter/archive/identity regressions are included in the 83.
+  that coverage. Native adapter/archive/identity regressions are included in the 87.
 - Separate actual Tk-control suite: **3 passed**. It exercises real control callbacks,
   valid and invalid data, explicit promotion cancellation/acceptance, inference, busy close,
   retained profile ownership and minimum-window help/exit controls.
@@ -42,6 +42,14 @@ executable acceptance requires two normal-exit launches against one marked synth
 The independent tests also corrupt a prior champion's actual artifact and prove rollback
 refuses it before changing deployment. Restoring the exact artifact permits real rollback.
 No arbitrary serialized/executable models, external requests or normal account data are used.
+
+Independent source review identified two admission gaps before publication: Windows directory
+junction ancestors and frozen profiles selected inside the application/resource tree. Both
+are now refused before directory creation, locking or SQLite access. Real marked-store tests
+use an actual Windows junction and both frozen roots, verify every preexisting target file
+remains byte-identical and prove missing descendants remain uncreated. A separate test keeps
+legitimate source-development `.runtime` profiles allowed. The focused profile/identity suite
+passes **14 tests**; the full and actual-Tk counts above were rerun after this correction.
 
 ## Failures retained and corrected
 

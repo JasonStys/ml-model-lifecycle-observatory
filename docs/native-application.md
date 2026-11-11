@@ -48,6 +48,9 @@ from source, executable, extracted package and Git. The new profile has an ident
 an exclusive retained owner lock, `dataset.jsonl`, `registry.sqlite3` and `models/`.
 Only one workbench may own it. A second instance refuses it rather than resetting it.
 Unknown nonempty profiles, linked state and corrupt registry identity are refused.
+Admission rejects symbolic-link and Windows-junction ancestors. In a frozen application,
+profiles inside the executable's installation directory or embedded resource tree are also
+refused before mutation; legitimate source-development test profiles remain available.
 
 This is a local **single-OS-owner** workspace, not encrypted per-user storage or production
 release authority. Other processes with that OS user's privileges can read its plaintext.
