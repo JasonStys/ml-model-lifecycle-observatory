@@ -167,3 +167,13 @@ function, table, and important-constant locations are generated in
 Start with the [organized handbook](docs/handbook.md) for current usage, design, security and test guidance. Reviewed downloadable editions: [project-guide.docx](docs/reports/project-guide.docx).
 
 [Publication identities and source scope](docs/reports/publications.json) · [Documentation validation record](docs/reports/documentation-refresh-2026-11-09.md). Historical results retain their own tested revision and date.
+
+## Current Windows application guide
+
+The published **1.1.0** app has a [four-page illustrated guide](docs/reports/windows-application-guide-1.1.0.docx) with actual installed screenshots, a worked user journey, important source excerpts and operating limits. Read the [dated validation report](docs/reports/installed-windows-2026-11-11.md) and [byte/page review manifest](docs/reports/windows-application-guide-1.1.0.json) for exact scope. Historical documentation editions remain unchanged.
+
+Added files:
+
+- [docs/reports/windows-application-guide-1.1.0.docx](docs/reports/windows-application-guide-1.1.0.docx): source-specific installed-app workflow, screenshots, code and measured validation.
+- [docs/reports/windows-application-guide-1.1.0.json](docs/reports/windows-application-guide-1.1.0.json): document, screenshot, immutable-source and reviewed-page hashes.
+- [docs/reports/installed-windows-2026-11-11.md](docs/reports/installed-windows-2026-11-11.md): observed results, installation, data handling and remaining limits.
