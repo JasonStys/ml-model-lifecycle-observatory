@@ -1,0 +1,70 @@
+{
+    "schema": 1,
+    "repository": "ml-model-lifecycle-observatory",
+    "runtimeVersion": "1.1.0",
+    "runtimeSource": "c23def449e9d1af1f9fbdce6438cf294cc2a4217",
+    "createdAt": "2026-11-11T07:02:49.415Z",
+    "author": "Jason Stys",
+    "document": "windows-application-guide-1.1.0.docx",
+    "sha256": "640a5fb81b67184395960172a44e24760ad4504a7d4863e7d8f3cba8dabb75a7",
+    "screenshots": [
+        {
+            "file": "native-dossier.png",
+            "sha256": "ee7cd32b3e13b1e625f655672f312d3218c36bc1086e24593cadb319effee89f",
+            "width": 1276,
+            "height": 899,
+            "caption": "The installed model workbench displays a verified model dossier and recorded quality evidence before an explicit lifecycle decision."
+        },
+        {
+            "file": "native-registry.png",
+            "sha256": "fe75f0817d09139139c26835ac8604f00adeac2560accef31cf7194802f463ad",
+            "width": 1276,
+            "height": 899,
+            "caption": "The real local registry displays retained model records. Reopening preserves the dataset and champion instead of training a substitute model."
+        }
+    ],
+    "snippets": [
+        {
+            "file": "desktop/workspace.py",
+            "first": 260,
+            "last": 280,
+            "sha256": "b58d3d5b96ca93a34039fc08d1c08367993758ef435a4b83b5fff1db482cda89",
+            "url": "https://github.com/JasonStys/ml-model-lifecycle-observatory/blob/c23def449e9d1af1f9fbdce6438cf294cc2a4217/desktop/workspace.py#L260"
+        }
+    ],
+    "observedTests": [
+        {
+            "name": "Real native workflows",
+            "observed": "The installed two-launch workflow passed actual two-model training, canceled/confirmed promotion, shadow prediction, eight-feature PSI, export refusal and exact dataset/model/champion restart.",
+            "result": "Passed"
+        },
+        {
+            "name": "Source and security",
+            "observed": "All required main workflows for the runtime revision passed; processed CodeQL analyses reported zero open main alerts before release.",
+            "result": "Passed"
+        },
+        {
+            "name": "Distribution identity",
+            "observed": "All 2 assets matched provider/checksum identities; all 1301 installed files remained unchanged during acceptance.",
+            "result": "Verified"
+        },
+        {
+            "name": "PC scope",
+            "observed": "New per-user version folder and individual links verified. Synthetic profiles only; existing data and Docker were not used or changed.",
+            "result": "Verified"
+        }
+    ],
+    "visualReview": {
+        "approved": true,
+        "reviewer": "root",
+        "ooxmlSchema": "passed",
+        "pages": {
+            "page-1.png": "a681385fca9dce3c62fbe7a827acad7e8ba90dedbacb0f5446986b988961a285",
+            "page-2.png": "7df744e384d5a039156f55044cbd8f509584ce4cb5ae1b36be3424403b4315c7",
+            "page-3.png": "08461b97757f0ed319d9b741aa168e23125763e853acf8dd5a479736eb4f6842",
+            "page-4.png": "5289ebc7b34d1426c8cc3871d736e854dac88d09473afbecd632af13030a1b54"
+        },
+        "scope": "All four final page contents individually inspected; only exact identical pixels carry prior inspection.",
+        "checkedUtc": "2026-11-11T07:15:15.926819+00:00"
+    }
+}
